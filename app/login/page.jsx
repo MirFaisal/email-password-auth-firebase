@@ -1,32 +1,41 @@
 "use client";
 
+import firebase_App from "@utils/firebase.init";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import Link from "next/link";
+import { useState } from "react";
 
 const page = () => {
-  // const handelRegister = (e) => {
-  //   e.preventDefault();
+  const [password, setPassword] = useState();
+  const [email, setEmail] = useState();
+  //auth
+  const auth = getAuth(firebase_App);
 
-  //   // email and password register with firebase
-  //   console.log(email, password);
-  //   createUserWithEmailAndPassword(auth, email, password)
-  //     .then((userCredential) => {
-  //       const user = userCredential.user;
-  //       console.log(user);
-  //     })
-  //     .catch((error) => console.log(error));
-  // };
+  //handel submit button
+  const handelRegister = (e) => {
+    e.preventDefault();
 
-  // //email change on bulr
-  // const onChangeEmail = (event) => {
-  //   const email = event.target.value;
-  //   setEmail(email);
-  // };
+    // email and password register with firebase
+    console.log(email, password);
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+      })
+      .catch((error) => console.log(error));
+  };
 
-  // // password change on change
-  // const onChangePasswoed = (event) => {
-  //   const password = event.target.value;
-  //   setPassword(password);
-  // };
+  //email change on bulr
+  const onChangeEmail = (event) => {
+    const email = event.target.value;
+    setEmail(email);
+  };
+
+  // password change on change
+  const onChangePasswoed = (event) => {
+    const password = event.target.value;
+    setPassword(password);
+  };
   return (
     <>
       <div className="flex flex-col items-center mt-10">
@@ -41,12 +50,12 @@ const page = () => {
        justify-center"
       >
         <form
-          // onSubmit={() => handelRegister(event)}
+          onSubmit={() => handelRegister(event)}
           className="flex flex-col items-start w-1/3  space-y-2 mt-7"
         >
           <label htmlFor="">Email:</label>
           <input
-            // onBlur={onChangeEmail}
+            onBlur={() => onChangeEmail(event)}
             type="email"
             name="email"
             placeholder="Enter your Email"
@@ -56,7 +65,7 @@ const page = () => {
 
           <label htmlFor="">Password:</label>
           <input
-            // onChange={onChangePasswoed}
+            onChange={() => onChangePasswoed(event)}
             type="password"
             name="password"
             placeholder="Enter your Password"
